@@ -1,88 +1,39 @@
-<!DOCTYPE html>
-<html lang="pt-BR">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Sorteador de Temas de Estudo</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      background: #f3f4f6;
-      display: flex;
-      justify-content: center;
-      padding: 20px;
-    }
-    .card {
-      background: white;
-      max-width: 700px;
-      width: 100%;
-      padding: 20px;
-      border-radius: 16px;
-      box-shadow: 0 10px 20px rgba(0,0,0,0.1);
-    }
-    h1 { text-align: center; }
-    .grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 16px;
-      margin-bottom: 16px;
-    }
-    textarea {
-      width: 100%;
-      padding: 10px;
-      border-radius: 8px;
-      border: 1px solid #ccc;
-      resize: vertical;
-    }
-    button {
-      width: 100%;
-      padding: 12px;
-      font-size: 16px;
-      border: none;
-      border-radius: 10px;
-      background: #2563eb;
-      color: white;
-      cursor: pointer;
-    }
-    button:hover { background: #1e40af; }
-    ul { margin-top: 12px; }
-    @media (max-width: 600px) {
-      .grid { grid-template-columns: 1fr; }
-    }
-  </style>
-</head>
-<body>
-  <div class="card">
-    <h1>🎓 Sorteador de Temas de Estudo</h1>
-    <div class="grid">
-      <textarea id="pessoas" rows="6" placeholder="Pessoas (uma por linha)"></textarea>
-      <textarea id="temas" rows="6" placeholder="Temas de estudo (um por linha)"></textarea>
-    </div>
+<script>
+  function sortear() {
+    const pessoas = document
+      .getElementById("pessoas")
+      .value
+      .split("\n")
+      .map(p => p.trim())
+      .filter(Boolean);
 
-    <button onclick="sortear()">🎲 Sortear</button>
+    const temas = document
+      .getElementById("temas")
+      .value
+      .split("\n")
+      .map(t => t.trim())
+      .filter(Boolean);
 
-    <div id="resultado"></div>
-  </div>
-  <script>
-    function sortear() {
-      const pessoas = document.getElementById('pessoas').value.split('
-').map(p => p.trim()).filter(Boolean);
-      const temas = document.getElementById('temas').value.split('
-').map(t => t.trim()).filter(Boolean);
-      const resultadoDiv = document.getElementById('resultado');
-      if (pessoas.length === 0 || temas.length === 0) {
-        resultadoDiv.innerHTML = '<p><strong>Preencha os campos.</strong></p>';
-        return;
-      }
-      temas.sort(() => Math.random() - 0.5);
+    const resultadoDiv = document.getElementById("resultado");
 
-      let html = '<h2>Resultado</h2><ul>';
-      pessoas.forEach((pessoa, i) => {
-        html += `<li><strong>${pessoa}</strong>: ${temas[i % temas.length]}</li>`;
-      });
-      html += '</ul>';
+    if (pessoas.length === 0 || temas.length === 0) {
+      resultadoDiv.innerHTML = "<p><strong>Preencha os dois campos.</strong></p>";
+      return;
+    }
 
-      resultadoDiv.innerHTML = html;
-    }
-  </script>
-</body>
+    // embaralha temas
+    for (let i = temas.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [temas[i], temas[j]] = [temas[j], temas[i]];
+    }
+
+    let html = "<h2>Resultado</h2><ul>";
+    pessoas.forEach((pessoa, i) => {
+      html += `<li><strong>${pessoa}</strong>: ${temas[i % temas.length]}</li>`;
+    });
+    html += "</ul>";
+
+    resultadoDiv.innerHTML = html;
+  }
+</script>
+``
