@@ -1,39 +1,101 @@
-<script>
-  function sortear() {
-    const pessoas = document
-      .getElementById("pessoas")
-      .value
-      .split("\n")
-      .map(p => p.trim())
-      .filter(Boolean);
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Sorteador de Temas de Estudo</title>
 
-    const temas = document
-      .getElementById("temas")
-      .value
-      .split("\n")
-      .map(t => t.trim())
-      .filter(Boolean);
-
-    const resultadoDiv = document.getElementById("resultado");
-
-    if (pessoas.length === 0 || temas.length === 0) {
-      resultadoDiv.innerHTML = "<p><strong>Preencha os dois campos.</strong></p>";
-      return;
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f3f4f6;
+      padding: 30px;
     }
 
-    // embaralha temas
-    for (let i = temas.length - 1; i > 0; i--) {
-      const j = Math.floor(Math.random() * (i + 1));
-      [temas[i], temas[j]] = [temas[j], temas[i]];
+    h1 {
+      margin-bottom: 20px;
     }
 
-    let html = "<h2>Resultado</h2><ul>";
-    pessoas.forEach((pessoa, i) => {
-      html += `<li><strong>${pessoa}</strong>: ${temas[i % temas.length]}</li>`;
+    .container {
+      display: flex;
+      gap: 20px;
+      flex-wrap: wrap;
+    }
+
+    textarea {
+      width: 300px;
+      height: 240px;
+      padding: 10px;
+      font-size: 14px;
+    }
+
+    button {
+      margin-top: 15px;
+      padding: 8px 20px;
+      font-size: 14px;
+      cursor: pointer;
+    }
+
+    #resultado {
+      margin-top: 25px;
+      background: white;
+      padding: 15px;
+      border-radius: 8px;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>🎓 Sorteador de Temas de Estudo</h1>
+
+  <div class="container">
+    <textarea id="pessoas" placeholder="Pessoas (uma por linha)"></textarea>
+    <textarea id="temas" placeholder="Temas de estudo (um por linha)"></textarea>
+  </div>
+
+  <button id="btnSortear">🎲 Sortear</button>
+
+  <div id="resultado"></div>
+
+  <script>
+    document.getElementById("btnSortear").addEventListener("click", function () {
+      const pessoas = document
+        .getElementById("pessoas")
+        .value
+        .split("\\n")
+        .map(p => p.trim())
+        .filter(Boolean);
+
+      const temas = document
+        .getElementById("temas")
+        .value
+        .split("\\n")
+        .map(t => t.trim())
+        .filter(Boolean);
+
+      const resultado = document.getElementById("resultado");
+
+      if (pessoas.length === 0 || temas.length === 0) {
+        resultado.innerHTML = "<strong>Preencha os dois campos.</strong>";
+        return;
+      }
+
+      // embaralhar temas
+      for (let i = temas.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [temas[i], temas[j]] = [temas[j], temas[i]];
+      }
+
+      let html = "<h2>Resultado:</h2><ul>";
+
+      pessoas.forEach((pessoa, index) => {
+        html += `<li><strong>${pessoa}</strong>: ${temas[index % temas.length]}</li>`;
+      });
+
+      html += "</ul>";
+      resultado.innerHTML = html;
     });
-    html += "</ul>";
+  </script>
 
-    resultadoDiv.innerHTML = html;
-  }
-</script>
-``
+</body>
+</html>
